@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm[toml]>=8", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ttt"
+description = "A web app to run table tennis tournaments."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Florian Eckardt", email = "florianeckardt91@gmail.com" },
+    { name = "Vadim Schultz", email = "vadim.schultz@me.com" },
+]
+maintainers = [
+    { name = "Florian Eckardt", email = "florianeckardt91@gmail.com" },
+    { name = "Vadim Schultz", email = "vadim.schultz@me.com" },
+]
+requires-python = ">=3.11"
+dependencies = [
+    "litestar[standard]",
+    "jinja2",
+    "pydantic",
+    "sqlalchemy",
+    "numpy",
+]
+# Dynamic versioning with setuptools_scm
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/vadim-schultz/ttt"
+Documentation = "https://github.com/vadim-schultz/ttt/README.md"
+Repository = "https://github.com/vadim-schultz/ttt"
+Issues = "https://github.com/vadim-schultz/ttt/issues"
+Changelog = "https://github.com/vadim-schultz/ttt/CHANGELOG.md"
+
+[project.scripts]
+ttt = "ttt.__main__:main"
+
+# Optional dependencies (extras)
+[project.optional-dependencies]
+docs = [
+    "sphinx",
+    "sphinx-autoapi",
+    "sphinx-rtd-theme",
+    "myst-parser",
+]
+test = [
+    "pytest",
+    "coverage[toml]",
+    "pytest-cov",
+]
+
+[tool.setuptools_scm]
+version_file = "src/ttt/_version.py"
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ttt = [
+    "py.typed",
+    # ... list other patterns/files
+]
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]
+
+[tool.coverage.run]
+source = ["ttt"]
+relative_files = true
+omit = ["_version.py"]
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]

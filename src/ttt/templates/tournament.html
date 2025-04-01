@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Tournament Details</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Start Date:</strong> {{ tournament.start_date.strftime('%Y-%m-%d') }}</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="badge {% if tournament.status == 'ongoing' %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ tournament.status.capitalize() }}
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <h3 class="mt-4">Rounds</h3>
+    {% if tournament.rounds %}
+    <div class="accordion" id="roundsAccordion">
+        {% for round in tournament.rounds %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading{{ round.id }}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse{{ round.id }}" aria-expanded="true"
+                        aria-controls="collapse{{ round.id }}">
+                    Round {{ round.round_number }}
+                </button>
+            </h2>
+            <div id="collapse{{ round.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ round.id }}"
+                 data-bs-parent="#roundsAccordion">
+                <div class="accordion-body">
+                    {% if round.matches %}
+                    <div class="list-group">
+                        {% for match in round.matches %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text-end">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <ul class="list-unstyled">
+                                                            {% for player in match.teams[0].players %}
+                                                            <li>{{ player.name }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h2>{{ match.teams[0].score }}</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text-start">
+                                                <div class="row">
+
+                                                    <div class="col-md-4">
+                                                        <h2>{{ match.teams[1].score }}</h2>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <ul class="list-unstyled">
+                                                            {% for player in match.teams[1].players %}
+                                                            <li>{{ player.name }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form action="/score" method="post"
+                                                  class="d-flex flex-column align-items-end">
+                                                <input type="hidden" name="match_id" value="{{ match.id }}">
+                                                <input type="hidden" name="team1_id" value="{{ match.teams[0].id }}">
+                                                <input type="hidden" name="team2_id" value="{{ match.teams[1].id }}">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="mb-2 w-100">
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                   name="team1_score" placeholder="{{ match.teams[0].score }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="mb-2 w-100">
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                   name="team2_score" placeholder="{{ match.teams[1].score }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <button type="submit" class="btn btn-primary btn-sm">Submit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p>No matches available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No rounds available.</p>
+    {% endif %}
+
+    <a href="/tournaments" class="btn btn-secondary mt-3">Back to Tournaments</a>
+</div>
+{% endblock %}

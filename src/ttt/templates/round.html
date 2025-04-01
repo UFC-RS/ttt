@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Round Details</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Round {{ round.round_number }}</h5>
+            <p><strong>Round ID:</strong> {{ round.id }}</p>
+            <p><strong>Tournament ID:</strong> {{ round.tournament_id }}</p>
+        </div>
+    </div>
+
+    <h3 class="mt-4">Matches</h3>
+    {% if round.matches %}
+    <ul class="list-group">
+        {% for match in round.matches %}
+        <li class="list-group-item">
+            <strong>Match ID:</strong> {{ match.id }} | Score: {{ match.score }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No matches available.</p>
+    {% endif %}
+
+    <a href="{{ '/round/' ~ round.tournament_id }}" class="btn btn-secondary mt-3">Back to Tournament</a>
+</div>
+{% endblock %}
