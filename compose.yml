@@ -22,8 +22,6 @@ services:
 
   app:
     build: .
-    command:
-      python -m pytest tests/test_db.py
     container_name: ttt-app
     ports:
       - "8000:8000"
