@@ -23,3 +23,7 @@ Run application back end
 ```
 litestar run
 ```
+
+Application GUI
+------------------------
+![image](https://github.com/user-attachments/assets/81a85493-ebc0-4932-b535-4c45e15e559e)
